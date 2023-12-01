@@ -5,52 +5,67 @@
 //  Created by 윤규호 on 11/30/23.
 //
 
-class Calculator{
-    func operate(cal:String, firstNumber:Double, secondNumber:Double) -> Double{
-        var result:Double = 0
-        switch(cal){
-        case "+" : let myCal = AddOperation(); result = myCal.operate(firstNumber: firstNumber, secondNumber: secondNumber)
-        case "-" : let myCal = SubtractOperation(); result = myCal.operate(firstNumber: firstNumber, secondNumber: secondNumber)
-        case "*" : let myCal = MultiplyOperation(); result = myCal.operate(firstNumber: firstNumber, secondNumber: secondNumber)
-        case "/" : let myCal = DivideOperation(); result = myCal.operate(firstNumber: firstNumber, secondNumber: secondNumber)
-        default : return 0
-        }
-        return result
+class AbsctracOperation {
+    func operate(firstNumber: Int, secondNumber: Int) -> Double? {
+        return nil
     }
 }
 
-//더하기 클래스
-class AddOperation{
-    func operate(firstNumber:Double, secondNumber:Double) -> Double {
-        print("\(firstNumber) + \(secondNumber) 의 결과")
-        return firstNumber + secondNumber
+class AddOperation: AbsctracOperation {
+    override func operate(firstNumber: Int, secondNumber: Int) -> Double {
+        return Double(firstNumber + secondNumber)
     }
 }
 
-//빼기 클래스
-class SubtractOperation{
-    func operate(firstNumber:Double, secondNumber:Double) -> Double {
-        print("\(firstNumber) - \(secondNumber) 의 결과")
-        return firstNumber - secondNumber
+class SubtractOperation: AbsctracOperation {
+    override func operate(firstNumber: Int, secondNumber: Int) -> Double {
+        return Double(firstNumber - secondNumber)
     }
 }
 
-//곱하기 클래스
-class MultiplyOperation{
-    func operate(firstNumber:Double, secondNumber:Double) -> Double {
-        print("\(firstNumber) * \(secondNumber) 의 결과")
-        return firstNumber * secondNumber
+class MultiplyOperation: AbsctracOperation {
+    override func operate(firstNumber: Int, secondNumber: Int) -> Double {
+        return Double(firstNumber * secondNumber)
     }
 }
 
-//나누기 클래스
-class DivideOperation{
-    func operate(firstNumber:Double, secondNumber:Double) -> Double {
-        print("\(firstNumber) / \(secondNumber) 의 결과")
-        return firstNumber / secondNumber
+class DivideOperation: AbsctracOperation {
+    override func operate(firstNumber: Int, secondNumber: Int) -> Double {
+        return Double(firstNumber / secondNumber)
     }
 }
 
-let calculator = Calculator()
-let result:Double = calculator.operate(cal: "-", firstNumber: 5, secondNumber: 2)
-print(result)
+class Calculator {
+    private var abstractOperation: AbsctracOperation
+    
+    init(operation: AbsctracOperation){
+        self.abstractOperation = operation
+    }
+    
+    func setOperation(operation: AbsctracOperation){
+        self.abstractOperation = operation
+    }
+    
+    func calculate(firstNumber: Int, secondNumber: Int) -> Double {
+        //옵셔널 바인딩 - 기본값 설정
+        abstractOperation.operate(firstNumber: firstNumber, secondNumber: secondNumber) ?? 0
+    }
+}
+
+let calculator = Calculator(operation: AddOperation())
+
+let addResult = calculator.calculate(firstNumber: 10, secondNumber: 20)
+
+calculator.setOperation(operation: SubtractOperation())
+let subtractResult = calculator.calculate(firstNumber: 30, secondNumber: 20)
+
+calculator.setOperation(operation: MultiplyOperation())
+let multiplyResult = calculator.calculate(firstNumber: 10, secondNumber: 5)
+
+calculator.setOperation(operation: DivideOperation())
+let divideResult = calculator.calculate(firstNumber: 40, secondNumber: 10)
+
+print("addResult: \(addResult)")
+print("subtractResult: \(subtractResult)")
+print("multiplyResult: \(multiplyResult)")
+print("divideResult: \(divideResult)")
